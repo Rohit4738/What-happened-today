@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quid Hodie Accidit - What Happened Today</title>
+    <link href="https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2B48C;
+            --accent-color: #A0522D;
+            --text-color: #3E2723;
+            --parchment: #F5E7D0;
+            --gold: #D4AF37;
+            --tech-color: #2E86C1;
+            --food-color: #E67E22;
+            --invention-color: #8E44AD;
+            --marble-bg: #F8F4E9;
+            --roman-red: #8B0000;
+            --bronze: #CD7F32;
+        }
+        
+        body {
+            font-family: 'IM Fell English', serif;
+            background-color: var(--marble-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-image: 
+                url('https://www.transparenttextures.com/patterns/paper.png'),
+                linear-gradient(to bottom, rgba(139, 0, 0, 0.1), transparent 200px);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(248, 244, 233, 0.9);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-left: 1px solid var(--bronze);
+            border-right: 1px solid var(--bronze);
+            position: relative;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, 
+                var(--roman-red), 
+                var(--bronze),
+                var(--gold),
+                var(--bronze),
+                var(--roman-red));
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            position: relative;
+            border-bottom: 3px double var(--bronze);
+        }
+        
+        header::before, header::after {
+            content: ".";
+            color: var(--roman-red);
+            position: absolute;
+            bottom: -15px;
+            font-size: 24px;
+            background: var(--marble-bg);
+            padding: 0 10px;
+        }
+        
+        header::before {
+            left: 20px;
+        }
+        
+        header::after {
+            right: 20px;
+        }
+        
+        h1 {
+            font-family: 'Almendra', serif;
+            font-size: 3.5rem;
+            color: var(--roman-red);
+            margin: 0;
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--bronze), transparent);
+        }
+        
+        h2 {
+            font-family: 'Almendra', serif;
+            color: var(--roman-red);
+            border-bottom: 1px solid var(--bronze);
+            padding-bottom: 5px;
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: var(--gold);
+        }
+        
+        .date-display {
+            font-size: 1.5rem;
+            color: var(--bronze);
+            font-style: italic;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .today-summary {
+            background: rgba(210, 180, 140, 0.2);
+            border-left: 4px solid var(--bronze);
+            padding: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            position: relative;
+        }
+        
+        .today-summary::before {
+            content: """;
+            font-size: 4rem;
+            color: rgba(139, 0, 0, 0.1);
+            position: absolute;
+            top: -10px;
+            left: 5px;
+            line-height: 1;
+        }
+        
+        .events-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .event-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--secondary-color);
+            border-radius: 3px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            box-shadow: 3px 3px 5px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+        }
+        
+        .event-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--gold), var(--bronze));
+        }
+        
+        .tech-event::before {
+            background: linear-gradient(90deg, var(--tech-color), #5DADE2);
+        }
+        
+        .food-event::before {
+            background: linear-gradient(90deg, var(--food-color), #EB984E);
+        }
+        
+        .invention-event::before {
+            background: linear-gradient(90deg, var(--invention-color), #9B59B6);
+        }
+        
+        .event-year {
+            font-weight: bold;
+            color: var(--roman-red);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(139, 0, 0, 0.1);
+            border-radius: 3px;
+        }
+        
+        .tech-event .event-year {
+            color: var(--tech-color);
+            background: rgba(46, 134, 193, 0.1);
+        }
+        
+        .food-event .event-year {
+            color: var(--food-color);
+            background: rgba(230, 126, 34, 0.1);
+        }
+        
+        .invention-event .event-year {
+            color: var(--invention-color);
+            background: rgba(142, 68, 173, 0.1);
+        }
+        
+        .event-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-family: 'Almendra', serif;
+            color: var(--text-color);
+        }
+        
+        .learn-more {
+            display: inline-block;
+            background: var(--roman-red);
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .tech-event .learn-more {
+            background: var(--tech-color);
+        }
+        
+        .food-event .learn-more {
+            background: var(--food-color);
+        }
+        
+        .invention-event .learn-more {
+            background: var(--invention-color);
+        }
+        
+        .learn-more:hover {
+            background: var(--bronze);
+            border-color: var(--text-color);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 1px solid var(--bronze);
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            position: relative;
+        }
+        
+        footer::before {
+            content: "SPQR";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--marble-bg);
+            padding: 0 15px;
+            color: var(--roman-red);
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: var(--marble-bg);
+            margin: 50px auto;
+            padding: 30px;
+            max-width: 700px;
+            border-radius: 3px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            position: relative;
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+            border: 1px solid var(--bronze);
+        }
+        
+        .modal-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, 
+                var(--roman-red), 
+                var(--bronze),
+                var(--gold),
+                var(--bronze),
+                var(--roman-red));
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--roman-red);
+            background: var(--marble-bg);
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--bronze);
+        }
+        
+        .modal-title {
+            color: var(--roman-red);
+            border-bottom: 2px solid var(--bronze);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-family: 'Almendra', serif;
+        }
+        
+        .tech-modal .modal-title {
+            color: var(--tech-color);
+            border-bottom-color: var(--tech-color);
+        }
+        
+        .food-modal .modal-title {
+            color: var(--food-color);
+            border-bottom-color: var(--food-color);
+        }
+        
+        .invention-modal .modal-title {
+            color: var(--invention-color);
+            border-bottom-color: var(--invention-color);
+        }
+        
+        .modal-text {
+            line-height: 1.7;
+        }
+        
+        .loading-spinner {
+            border: 5px solid var(--secondary-color);
+            border-top: 5px solid var(--roman-red);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .events-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quid Hodie Accidit / 
+
+What Happened Today</h1>
+            <div class="date-display" id="current-date">Loading date...</div>
+        </header>
+        
+        <main>
+            <div class="today-summary" id="today-summary">
+                Gathering today's historical summary...
+            </div>
+            
+            <h2>Historical Events on This Day</h2>
+            <div class="events-container" id="events-container">
+                <div class="loading-spinner"></div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Acta Diurna - Daily Acts from the Annals of History</p>
+        </footer>
+    </div>
+    
+    <!-- Modal for event details -->
+    <div class="modal" id="event-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title" id="modal-title">Event Title</h2>
+            <div class="modal-text" id="modal-text">Loading event details...</div>
+        </div>
+    </div>
+    
+    <script>
+        // Get current date and format it
+        function getCurrentDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return now.toLocaleDateString('en-US', options);
+        }
+        
+        // Display current date
+        document.getElementById('current-date').textContent = getCurrentDate();
+        
+        // Get current month and day
+        const now = new Date();
+        const currentMonth = now.getMonth() + 1; // Months are 0-indexed
+        const currentDay = now.getDate();
+        
+        // Sample summary (in a real app, this would be generated from the events)
+        const todaySummary = "Today in history marks significant events that shaped our world. From political milestones to cultural breakthroughs, this date has witnessed moments that changed the course of history.";
+        
+        // Display summary
+        document.getElementById('today-summary').textContent = todaySummary;
+        
+        // Function to extract year from Wikipedia snippet
+        function extractYearFromSnippet(snippet) {
+            const yearMatch = snippet.match(/\b\d{3,4}\b/);
+            return yearMatch ? yearMatch[0] : "Unknown Year";
+        }
+        
+        // Function to clean HTML from snippets
+        function cleanSnippet(snippet) {
+            return snippet.replace(/<[^>]*>?/gm, '')
+                          .replace(/&#\d+;/g, '')
+                          .replace(/\[\d+\]/g, '');
+        }
+        
+        // Function to fetch historical events from Wikipedia API
+        async function fetchHistoricalEvents() {
+            const eventsContainer = document.getElementById('events-container');
+            eventsContainer.innerHTML = '<div class="loading-spinner"></div>';
+            
+            try {
+                // First, get the month name for our search
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+                const monthName = monthNames[now.getMonth()];
+                
+                // Search for general historical events
+                const generalQuery = `${monthName} ${currentDay}`;
+                const generalResponse = await fetch(
+                    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(generalQuery)}&format=json&origin=*&srlimit=5`
+                );
+                const generalData = await generalResponse.json();
+                
+                // Search for tech events
+                const techQuery = `${monthName} ${currentDay} technology|computer|internet|software|hardware`;
+                const techResponse = await fetch(
+                    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(techQuery)}&format=json&origin=*&srlimit=1`
+                );
+                const techData = await techResponse.json();
+                
+                // Search for food events
+                const foodQuery = `${monthName} ${currentDay} food|cuisine|recipe|culinary|restaurant`;
+                const foodResponse = await fetch(
+                    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(foodQuery)}&format=json&origin=*&srlimit=1`
+                );
+                const foodData = await foodResponse.json();
+                
+                // Search for invention/discovery events
+                const inventionQuery = `${monthName} ${currentDay} invention|discovery|invented|discovered|patent`;
+                const inventionResponse = await fetch(
+                    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(inventionQuery)}&format=json&origin=*&srlimit=1`
+                );
+                const inventionData = await inventionResponse.json();
+                
+                // Combine all events
+                let allEvents = [];
+                
+                if (generalData.query && generalData.query.search.length > 0) {
+                    allEvents = generalData.query.search.map(event => ({
+                        ...event,
+                        type: 'general'
+                    }));
+                }
+                
+                if (techData.query && techData.query.search.length > 0) {
+                    allEvents.push({
+                        ...techData.query.search[0],
+                        type: 'tech'
+                    });
+                }
+                
+                if (foodData.query && foodData.query.search.length > 0) {
+                    allEvents.push({
+                        ...foodData.query.search[0],
+                        type: 'food'
+                    });
+                }
+                
+                if (inventionData.query && inventionData.query.search.length > 0) {
+                    allEvents.push({
+                        ...inventionData.query.search[0],
+                        type: 'invention'
+                    });
+                }
+                
+                if (allEvents.length > 0) {
+                    displayEvents(allEvents);
+                } else {
+                    eventsContainer.innerHTML = '<div class="event-card">No significant historical events found for this date.</div>';
+                }
+            } catch (error) {
+                console.error('Error fetching historical events:', error);
+                eventsContainer.innerHTML = `
+                    <div class="event-card">
+                        Failed to load historical events. Please try again later.
+                    </div>
+                `;
+            }
+        }
+        
+        // Function to display events
+        function displayEvents(events) {
+            const eventsContainer = document.getElementById('events-container');
+            eventsContainer.innerHTML = '';
+            
+            events.forEach(event => {
+                const year = extractYearFromSnippet(event.snippet);
+                const cleanSnippetText = cleanSnippet(event.snippet);
+                const eventType = event.type || 'general';
+                
+                const eventCard = document.createElement('div');
+                eventCard.className = `event-card ${eventType}-event`;
+                eventCard.innerHTML = `
+                    <div class="event-year">${year}</div>
+                    <div class="event-title">${event.title}</div>
+                    <p>${cleanSnippetText}</p>
+                    <a href="#" class="learn-more" 
+                       data-title="${event.title}" 
+                       data-snippet="${cleanSnippetText}"
+                       data-pageid="${event.pageid}"
+                       data-type="${eventType}">Learn More</a>
+                `;
+                eventsContainer.appendChild(eventCard);
+            });
+            
+            // Add event listeners to "Learn More" buttons
+            document.querySelectorAll('.learn-more').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openModal(
+                        this.getAttribute('data-title'),
+                        this.getAttribute('data-snippet'),
+                        this.getAttribute('data-pageid'),
+                        this.getAttribute('data-type')
+                    );
+                });
+            });
+        }
+        
+        // Function to fetch full page content for modal
+        async function fetchPageContent(pageid) {
+            try {
+                const response = await fetch(
+                    `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&pageids=${pageid}&format=json&origin=*&exintro=true&explaintext=true`
+                );
+                const data = await response.json();
+                return data.query.pages[pageid].extract;
+            } catch (error) {
+                console.error('Error fetching page content:', error);
+                return null;
+            }
+        }
+        
+        // Modal functions
+        async function openModal(title, snippet, pageid, type) {
+            const modal = document.getElementById('event-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalText = document.getElementById('modal-text');
+            
+            // Add class based on event type
+            modal.className = 'modal';
+            if (type === 'tech') modal.classList.add('tech-modal');
+            if (type === 'food') modal.classList.add('food-modal');
+            if (type === 'invention') modal.classList.add('invention-modal');
+            
+            modalTitle.textContent = title;
+            modalText.innerHTML = `<p>${snippet}</p><div class="loading-spinner"></div>`;
+            
+            modal.style.display = 'block';
+            
+            // Fetch more detailed content
+            const fullContent = await fetchPageContent(pageid);
+            
+            if (fullContent) {
+                // Limit the content length and clean it up
+                const contentPreview = fullContent.length > 500 
+                    ? fullContent.substring(0, 500) + '...' 
+                    : fullContent;
+                
+                modalText.innerHTML = `
+                    <p>${contentPreview}</p>
+                    <p><a href="https://en.wikipedia.org/?curid=${pageid}" target="_blank" class="learn-more">Read full article on Wikipedia</a></p>
+                `;
+            } else {
+                modalText.innerHTML = `
+                    <p>${snippet}</p>
+                    <p><a href="https://en.wikipedia.org/?curid=${pageid}" target="_blank" class="learn-more">Read more on Wikipedia</a></p>
+                `;
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('event-modal').style.display = 'none';
+        }
+        
+        // Close modal when clicking X
+        document.querySelector('.close-modal').addEventListener('click', closeModal);
+        
+        // Close modal when clicking outside content
+        window.addEventListener('click', function(event) {
+            if (event.target === document.getElementById('event-modal')) {
+                closeModal();
+            }
+        });
+        
+        // Initialize the page
+        fetchHistoricalEvents();
+    </script>
+</body>
+</html>
